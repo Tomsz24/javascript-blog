@@ -6,7 +6,8 @@
     optTitleListSelector = '.titles',
     optArticleTagSelector = '.post-tags .list',
     optArticleAuthorSelector = '.post-author',
-    optTagsListSelector = '.tags.list';
+    optCloudClassPrefix = 'tag-size-',
+    optCloudClassCount = 5;
 
 
   const titleList = document.querySelector(optTitleListSelector);
@@ -57,9 +58,30 @@
     link.addEventListener('click', titleClickHandler);
   }
 
+  function calculateTagsParams(tags) {
+    const params = {
+      max: 0,
+      min: 999999,
+    }
+
+    for (let tag in tags) {
+      params.max = Math.max(tags[tag], params.max);
+      params.min = Math.min(tags[tag], params.max);
+    }
+    return params;
+  }
+
+  function calculateTagClass(count, params) {
+    const normalizedCount = count - params.min;
+    const normalizedMax = params.max - params.min;
+    const percentage = normalizedCount / normalizedMax;
+    const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+
+    return optCloudClassPrefix + classNumber
+  };
 
   function generateTags() {
-    let allTags = [];
+    let allTags = {};
     const articles = document.querySelectorAll(optArticleSelector);
     for (const article of articles) {
       const titleList = article.querySelector(optArticleTagSelector);
@@ -69,13 +91,23 @@
       articleTagsArray.map(tag => {
         let htmlCode = `<li><a href="tag-${tag}">${tag}</a></li> `;
         titleList.innerHTML += htmlCode;
-        if (allTags.indexOf(htmlCode) == -1) {
-          allTags.push(htmlCode);
+        if (!allTags[tag]) {
+          allTags[tag] = 1;
+        } else {
+          allTags[tag]++;
         }
       })
     }
+    const tagsParams = calculateTagsParams(allTags);
     const tagList = document.querySelector('.tags');
-    tagList.innerHTML = allTags.join(' ');
+    let allTagsHTML = '';
+
+
+    for (let tag in allTags) {
+      const tagLinkHTML = calculateTagClass(allTags[tag], tagsParams);
+      allTagsHTML += `<li><a class="${tagLinkHTML}" href="tag-${tag}">${tag}</a><span>(${allTags[tag]})</span></li>`;
+    }
+    tagList.innerHTML = allTagsHTML;
   }
   generateTags();
 
