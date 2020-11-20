@@ -5,7 +5,8 @@
     optTitleSelector = '.post-title',
     optTitleListSelector = '.titles',
     optArticleTagSelector = '.post-tags .list',
-    optArticleAuthorSelector = '.post-author';
+    optArticleAuthorSelector = '.post-author',
+    optTagsListSelector = '.tags.list';
 
 
   const titleList = document.querySelector(optTitleListSelector);
@@ -58,7 +59,7 @@
 
 
   function generateTags() {
-    let html = '';
+    let allTags = [];
     const articles = document.querySelectorAll(optArticleSelector);
     for (const article of articles) {
       const titleList = article.querySelector(optArticleTagSelector);
@@ -66,9 +67,15 @@
       const articleTagsArray = articleTags.split(' ');
 
       articleTagsArray.map(tag => {
-        titleList.innerHTML += `<li><a href="tag-${tag}">${tag}</a></li> `;
+        let htmlCode = `<li><a href="tag-${tag}">${tag}</a></li> `;
+        titleList.innerHTML += htmlCode;
+        if (allTags.indexOf(htmlCode) == -1) {
+          allTags.push(htmlCode);
+        }
       })
     }
+    const tagList = document.querySelector('.tags');
+    tagList.innerHTML = allTags.join(' ');
   }
   generateTags();
 
