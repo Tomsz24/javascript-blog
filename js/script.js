@@ -143,11 +143,17 @@
 
   function generateAuthors() {
 
+    const allAuthors = {};
     const articles = document.querySelectorAll(optArticleSelector);
     for (const article of articles) {
       const authorTitle = article.querySelector(optArticleAuthorSelector);
       const author = article.getAttribute('data-author');
       authorTitle.innerHTML = `by <a href="author-${author}">${author}</a>`;
+      if (!allAuthors[author]) {
+        allAuthors[author] = 1;
+      } else {
+        allAuthors[author]++;
+      }
     }
   }
   generateAuthors();
