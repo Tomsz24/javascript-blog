@@ -1,6 +1,5 @@
 'use strict'
 {
-
   const templates = {
     articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
     articleTag: Handlebars.compile(document.querySelector('#template-article-tag').innerHTML),
@@ -18,8 +17,6 @@
     optCloudClassCount = 5,
     optCloudAllTags = '.list.tags',
     optAuthorsListSelector = '.list.authors';
-
-
 
   const titleList = document.querySelector(optTitleListSelector);
 
