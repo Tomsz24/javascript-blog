@@ -154,6 +154,13 @@
       } else {
         allAuthors[author]++;
       }
+      const authorList = document.querySelector('.list.authors');
+      let allAuthorsHTML = '';
+      for (const author in allAuthors) {
+        allAuthorsHTML += `
+        <li><a href="#">${author}</a><span>(${allAuthors[author]})</span></li>`;
+      }
+      authorList.innerHTML = allAuthorsHTML;
     }
   }
   generateAuthors();
